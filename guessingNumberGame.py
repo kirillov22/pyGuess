@@ -24,9 +24,10 @@ def check_guess(guess):
     
 def check_is_num(user_input):
     """Boolean; Checks whether the input is a number"""
-    if user_input.isdigit:
+    try:
+        int(user_input)
         return True
-    else:
+    except ValueError:
         return False
 
 
@@ -36,8 +37,16 @@ def get_num_guesses():
     check_terminate(num_guesses)
 
     is_valid = check_is_valid_num(num_guesses)
+    if is_valid:
+        if int(num_guesses) < 1 or int(num_guesses) > 10:
+            is_valid = False
+
     while not is_valid:
-        print("Looks like that number is not valid")
+        print("Looks like that number is not valid. Please enter one between 1 and 10.")
+        num_guesses = input("How many guesses would you like? You can choose between 1 and 10")
+        is_valid = check_is_valid_num(num_guesses)
+
+    return int(num_guesses)
 
 
 def check_terminate(user_input):
@@ -53,7 +62,9 @@ def check_terminate(user_input):
 def check_is_valid_num(user_input):
     """Boolean; Checks whether the input is non-negative"""
     is_digit = check_is_num(user_input)
-    if int(user_input) >= 0 and is_digit:
+    if not is_digit:
+        return False
+    elif is_digit and int(user_input) > 0:
         return True
     else:
         return False
@@ -94,6 +105,8 @@ def get_number(to_find):
 def main():
     """Starts to run the program"""
     # Initialise variables
+    num_guesses = get_num_guesses()
+    print("You will have {} guess to beat me! Good luck fren")
     num1 = get_number("low")
     num2 = get_number("high")
     LINE = "-"*30
@@ -103,7 +116,7 @@ def main():
     print("Generating a random number from the range {} - {}....".format(num1, num2))
     print(number_to_guess)
 
-    while guess_num:
+    while guess_num <= num_guesses:
         print(LINE)
         print("Guess number: {} ".format(guess_num))
         guess = input("Please enter your guess: ")
@@ -117,7 +130,7 @@ def main():
         guess = int(guess)
         if check_guess(guess):
             print("Wow! You guessed this correctly. The number was {}.".format(number_to_guess))
-        elif guess_num :
+        elif guess_num == num_guesses:
             if guess > number_to_guess:
                 guess_direction = "LOWER"
             else:
