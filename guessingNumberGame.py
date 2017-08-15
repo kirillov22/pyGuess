@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 from random import *
 import sys
 LINE = "-" * 30
@@ -128,7 +128,6 @@ def main():
 
     number_to_guess = generate_random_num(int(num1), int(num2))
     print("Generating a random number from the range {} - {}....".format(num1, num2))
-    print(number_to_guess)
 
     while guess_num <= num_guesses and not is_game_ended:
         print(LINE)
